@@ -1,51 +1,24 @@
 package com.imnidasoftware.vknewsclient
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import kotlinx.coroutines.launch
+import androidx.compose.ui.unit.dp
+import com.imnidasoftware.vknewsclient.domain.FeedPost
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
-    val snackBarHostState = remember {
-        SnackbarHostState()
-    }
-    val scope = rememberCoroutineScope()
-    val fabIsVisible = remember {
-        mutableStateOf(true)
+    val feedPost = remember {
+        mutableStateOf(FeedPost())
     }
 
     Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackBarHostState)
-        },
-        floatingActionButton = {
-            if (fabIsVisible.value) {
-                FloatingActionButton(
-                    onClick = {
-                        scope.launch {
-                            val action = snackBarHostState.showSnackbar(
-                                message = "This is snackbar",
-                                actionLabel = "Hide FAB",
-                                duration = SnackbarDuration.Long
-                            )
-                            if (action == SnackbarResult.ActionPerformed) {
-                                fabIsVisible.value = false
-                            }
-                        }
-                    }
-                ) {
-                    Icon(Icons.Filled.Favorite, contentDescription = null)
-                }
-            }
-        },
         bottomBar = {
             BottomNavigation {
                 val selectedItemPosition = remember {
@@ -74,6 +47,22 @@ fun MainScreen() {
             }
         }
     ) {
-
+        PostCard(
+            modifier = Modifier.padding(8.dp),
+            feedPost = feedPost.value,
+            onStatisticsItemClickListener = { newItem ->
+                val oldStatistics = feedPost.value.statistics
+                val newStatistics = oldStatistics.toMutableList().apply {
+                    replaceAll { oldItem ->
+                        if(oldItem.type == newItem.type) {
+                            oldItem.copy(count = oldItem.count + 1)
+                        } else {
+                            oldItem
+                        }
+                    }
+                }
+                feedPost.value = feedPost.value.copy(statistics = newStatistics)
+            }
+        )
     }
 }
