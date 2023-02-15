@@ -1,4 +1,4 @@
-package com.imnidasoftware.vknewsclient
+package com.imnidasoftware.vknewsclient.ui.theme
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.imnidasoftware.vknewsclient.R
 import com.imnidasoftware.vknewsclient.domain.FeedPost
 import com.imnidasoftware.vknewsclient.domain.StatisticItem
 import com.imnidasoftware.vknewsclient.domain.StatisticType
