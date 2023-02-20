@@ -2,22 +2,23 @@ package com.imnidasoftware.vknewsclient.ui.theme
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.imnidasoftware.vknewsclient.MainViewModel
+import com.imnidasoftware.vknewsclient.domain.FeedPost
 import com.imnidasoftware.vknewsclient.navigation.AppNavGraph
 import com.imnidasoftware.vknewsclient.navigation.rememberNavigationState
 
 @Composable
-fun MainScreen(viewModel: MainViewModel) {
+fun MainScreen() {
     val navigationState = rememberNavigationState()
+
+    val commentsToPost: MutableState<FeedPost?> = remember {
+        mutableStateOf(null)
+    }
     Scaffold(
         bottomBar = {
             BottomNavigation {
@@ -48,10 +49,18 @@ fun MainScreen(viewModel: MainViewModel) {
         AppNavGraph(
             navController = navigationState.navHostController,
             homeScreenContent = {
-                HomeScreen(
-                    viewModel = viewModel,
-                    paddingValues = paddingValues
-                )
+                if (commentsToPost.value == null) {
+                    HomeScreen(
+                        paddingValues = paddingValues,
+                        onCommentClickListener = {
+                            commentsToPost.value = it
+                        }
+                    )
+                } else {
+                    CommentsScreen {
+                        commentsToPost.value = null
+                    }
+                }
             },
             favoriteScreenContent = { TextCounter(name = "Favorite") },
             profileScreenContent = { TextCounter(name = "Profile") }
