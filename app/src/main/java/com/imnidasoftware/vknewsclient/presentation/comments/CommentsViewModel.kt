@@ -1,11 +1,10 @@
-package com.imnidasoftware.vknewsclient
+package com.imnidasoftware.vknewsclient.presentation.comments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.imnidasoftware.vknewsclient.domain.FeedPost
 import com.imnidasoftware.vknewsclient.domain.PostComment
-import com.imnidasoftware.vknewsclient.ui.theme.CommentsScreenState
 
 class CommentsViewModel(
     feedPost: FeedPost

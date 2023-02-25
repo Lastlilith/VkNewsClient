@@ -1,4 +1,4 @@
-package com.imnidasoftware.vknewsclient
+package com.imnidasoftware.vknewsclient.presentation.main
 
 sealed class AuthState {
 

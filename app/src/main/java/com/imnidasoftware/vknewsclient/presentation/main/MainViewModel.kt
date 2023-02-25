@@ -1,4 +1,4 @@
-package com.imnidasoftware.vknewsclient
+package com.imnidasoftware.vknewsclient.presentation.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

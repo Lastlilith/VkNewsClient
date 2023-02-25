@@ -1,4 +1,4 @@
-package com.imnidasoftware.vknewsclient.ui.theme
+package com.imnidasoftware.vknewsclient.presentation.news
 
 import com.imnidasoftware.vknewsclient.domain.FeedPost
 

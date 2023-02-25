@@ -1,4 +1,4 @@
-package com.imnidasoftware.vknewsclient
+package com.imnidasoftware.vknewsclient.presentation.comments
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
