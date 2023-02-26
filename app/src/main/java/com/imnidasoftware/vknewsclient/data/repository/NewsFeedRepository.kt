@@ -4,6 +4,7 @@ import android.app.Application
 import com.imnidasoftware.vknewsclient.data.mapper.NewsFeedMapper
 import com.imnidasoftware.vknewsclient.data.network.ApiFactory
 import com.imnidasoftware.vknewsclient.domain.FeedPost
+import com.imnidasoftware.vknewsclient.domain.PostComment
 import com.imnidasoftware.vknewsclient.domain.StatisticItem
 import com.imnidasoftware.vknewsclient.domain.StatisticType
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
@@ -49,6 +50,15 @@ class NewsFeedRepository(application: Application) {
             postId = feedPost.id
         )
         _feedPosts.remove(feedPost)
+    }
+
+    suspend fun getComments(feedPost: FeedPost): List<PostComment> {
+        val comments = apiService.getComments(
+            accessToken = getAccessToken(),
+            ownerId = feedPost.communityId,
+            postId = feedPost.id
+        )
+        return mapper.mapResponseToComments(comments)
     }
 
     suspend fun changeLikeStatus(feedPost: FeedPost) {
