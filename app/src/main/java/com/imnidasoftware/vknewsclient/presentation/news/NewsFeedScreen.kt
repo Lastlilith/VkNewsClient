@@ -82,8 +82,8 @@ private fun FeedPosts(
                     onCommentClickListener = {
                         onCommentClickListener(feedPost)
                     },
-                    onLikeClickListener = { statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
+                    onLikeClickListener = {
+                        viewModel.changeLikeStatus(feedPost)
                     }
                 )
             }
