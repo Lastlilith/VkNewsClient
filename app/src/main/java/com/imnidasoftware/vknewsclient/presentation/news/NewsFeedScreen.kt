@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,11 +17,10 @@ import com.imnidasoftware.vknewsclient.ui.theme.DarkBlue
 
 @Composable
 fun NewsFeedScreen(
-    paddingValues: PaddingValues,
-    onCommentClickListener: (FeedPost) -> Unit
+    paddingValues: PaddingValues, onCommentClickListener: (FeedPost) -> Unit
 ) {
     val viewModel: NewsFeedViewModel = viewModel()
-    val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)
+    val screenState = viewModel.screenState.collectAsState(NewsFeedScreenState.Initial)
 
     when (val currentState = screenState.value) {
         is NewsFeedScreenState.Posts -> {
@@ -33,11 +32,10 @@ fun NewsFeedScreen(
                 nextDataIsLoading = currentState.nextDataIsLoading
             )
         }
-        is NewsFeedScreenState.Initial -> {}
+        NewsFeedScreenState.Initial -> {}
         NewsFeedScreenState.Loading -> {
             Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(color = DarkBlue)
             }
@@ -55,19 +53,11 @@ private fun FeedPosts(
     nextDataIsLoading: Boolean
 ) {
     LazyColumn(
-        modifier = Modifier.padding(paddingValues),
-        contentPadding = PaddingValues(
-            top = 16.dp,
-            start = 8.dp,
-            end = 8.dp,
-            bottom = 16.dp
-        ),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.padding(paddingValues), contentPadding = PaddingValues(
+            top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp
+        ), verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(
-            items = posts,
-            key = { it.id }
-        ) { feedPost ->
+        items(items = posts, key = { it.id }) { feedPost ->
             val dismissState = rememberDismissState()
             if (dismissState.isDismissed(DismissDirection.EndToStart)) {
                 viewModel.remove(feedPost)
@@ -86,7 +76,7 @@ private fun FeedPosts(
                     },
                     onLikeClickListener = {
                         viewModel.changeLikeStatus(feedPost)
-                    }
+                    },
                 )
             }
         }
@@ -97,7 +87,7 @@ private fun FeedPosts(
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(16.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator(color = DarkBlue)
                 }
@@ -109,4 +99,3 @@ private fun FeedPosts(
         }
     }
 }
-

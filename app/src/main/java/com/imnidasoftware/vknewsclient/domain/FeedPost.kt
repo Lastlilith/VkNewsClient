@@ -17,8 +17,10 @@ data class FeedPost(
     val contentImageUrl: String?,
     val statistics: List<StatisticItem>,
     val isLiked: Boolean
-): Parcelable {
+) : Parcelable {
+
     companion object {
+
         val NavigationType: NavType<FeedPost> = object : NavType<FeedPost>(false) {
 
             override fun get(bundle: Bundle, key: String): FeedPost? {
@@ -32,7 +34,6 @@ data class FeedPost(
             override fun put(bundle: Bundle, key: String, value: FeedPost) {
                 bundle.putParcelable(key, value)
             }
-
         }
     }
 }

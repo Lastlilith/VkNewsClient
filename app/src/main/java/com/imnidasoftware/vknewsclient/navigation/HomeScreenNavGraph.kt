@@ -8,9 +8,8 @@ import androidx.navigation.navigation
 import com.imnidasoftware.vknewsclient.domain.FeedPost
 
 fun NavGraphBuilder.homeScreenNavGraph(
-
     newsFeedScreenContent: @Composable () -> Unit,
-    commentsScreenContent: @Composable (FeedPost) -> Unit,
+    commentsScreenContent: @Composable (FeedPost) -> Unit
 ) {
     navigation(
         startDestination = Screen.NewsFeed.route,
@@ -24,9 +23,9 @@ fun NavGraphBuilder.homeScreenNavGraph(
             arguments = listOf(
                 navArgument(Screen.KEY_FEED_POST) {
                     type = FeedPost.NavigationType
-                },
+                }
             )
-        ) {
+        ) { //comments/{feed_post_id}
             val feedPost = it.arguments?.getParcelable<FeedPost>(Screen.KEY_FEED_POST)
                 ?: throw RuntimeException("Args is null")
             commentsScreenContent(feedPost)

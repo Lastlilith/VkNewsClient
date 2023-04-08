@@ -10,6 +10,7 @@ import com.imnidasoftware.vknewsclient.domain.FeedPost
 class NavigationState(
     val navHostController: NavHostController
 ) {
+
     fun navigateTo(route: String) {
         navHostController.navigate(route) {
             popUpTo(navHostController.graph.findStartDestination().id) {
@@ -21,13 +22,13 @@ class NavigationState(
     }
 
     fun navigateToComments(feedPost: FeedPost) {
-        navHostController.navigate(Screen.Comments.getRouteWithArgs(feedPost))
+        navHostController.navigate(Screen.Comments.getRouteWithArgs(feedPost)) // comments/15
     }
 }
 
 @Composable
 fun rememberNavigationState(
-     navHostController: NavHostController = rememberNavController()
+    navHostController: NavHostController = rememberNavController()
 ): NavigationState {
     return remember {
         NavigationState(navHostController)

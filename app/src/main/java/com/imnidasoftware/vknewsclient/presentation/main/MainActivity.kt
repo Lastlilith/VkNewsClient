@@ -11,15 +11,25 @@ import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        try {
+            Class.forName("dalvik.system.CloseGuard")
+                .getMethod("setEnabled", Boolean::class.javaPrimitiveType)
+                .invoke(null, true)
+        } catch (e: ReflectiveOperationException) {
+            throw RuntimeException(e)
+        }
+
         setContent {
             VkNewsClientTheme {
                 val viewModel: MainViewModel = viewModel()
                 val authState = viewModel.authState.observeAsState(AuthState.Initial)
 
                 val launcher = rememberLauncherForActivityResult(
-                    contract = VK.getVKAuthActivityResultContract(),
+                    contract = VK.getVKAuthActivityResultContract()
                 ) {
                     viewModel.performAuthResult(it)
                 }

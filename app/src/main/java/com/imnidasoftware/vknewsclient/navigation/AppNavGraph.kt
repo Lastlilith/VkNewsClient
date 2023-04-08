@@ -8,14 +8,14 @@ import com.imnidasoftware.vknewsclient.domain.FeedPost
 
 @Composable
 fun AppNavGraph(
-    navController: NavHostController,
+    navHostController: NavHostController,
     newsFeedScreenContent: @Composable () -> Unit,
     favoriteScreenContent: @Composable () -> Unit,
     profileScreenContent: @Composable () -> Unit,
     commentsScreenContent: @Composable (FeedPost) -> Unit,
 ) {
     NavHost(
-        navController = navController,
+        navController = navHostController,
         startDestination = Screen.Home.route
     ) {
         homeScreenNavGraph(

@@ -9,7 +9,7 @@ import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import com.vk.api.sdk.auth.VKAuthenticationResult
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _authState = MutableLiveData<AuthState>(AuthState.Initial)
     val authState: LiveData<AuthState> = _authState
@@ -18,7 +18,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         val storage = VKPreferencesKeyValueStorage(application)
         val token = VKAccessToken.restore(storage)
         val loggedIn = token != null && token.isValid
-        Log.e("POPO", "Token: ${token?.accessToken}")
+        Log.d("MainViewModel", "Token: ${token?.accessToken}")
         _authState.value = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
     }
 

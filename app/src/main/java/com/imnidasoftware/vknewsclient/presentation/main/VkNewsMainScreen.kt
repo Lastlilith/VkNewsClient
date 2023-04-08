@@ -22,6 +22,7 @@ fun MainScreen() {
         bottomBar = {
             BottomNavigation {
                 val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
+
                 val items = listOf(
                     NavigationItem.Home,
                     NavigationItem.Favorite,
@@ -32,6 +33,7 @@ fun MainScreen() {
                     val selected = navBackStackEntry?.destination?.hierarchy?.any {
                         it.route == item.screen.route
                     } ?: false
+
                     BottomNavigationItem(
                         selected = selected,
                         onClick = {
@@ -53,7 +55,7 @@ fun MainScreen() {
         }
     ) { paddingValues ->
         AppNavGraph(
-            navController = navigationState.navHostController,
+            navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
                 NewsFeedScreen(
                     paddingValues = paddingValues,
@@ -62,7 +64,7 @@ fun MainScreen() {
                     }
                 )
             },
-            commentsScreenContent = {feedPost ->
+            commentsScreenContent = { feedPost ->
                 CommentsScreen(
                     onBackPressed = {
                         navigationState.navHostController.popBackStack()
@@ -70,7 +72,7 @@ fun MainScreen() {
                     feedPost = feedPost
                 )
             },
-            favoriteScreenContent = { TextCounter(name = "Favorite") },
+            favoriteScreenContent = { TextCounter(name = "Favourite") },
             profileScreenContent = { TextCounter(name = "Profile") }
         )
     }
@@ -81,6 +83,7 @@ private fun TextCounter(name: String) {
     var count by rememberSaveable {
         mutableStateOf(0)
     }
+
     Text(
         modifier = Modifier.clickable { count++ },
         text = "$name Count: $count",
