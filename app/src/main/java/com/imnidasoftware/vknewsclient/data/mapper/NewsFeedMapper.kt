@@ -2,10 +2,10 @@ package com.imnidasoftware.vknewsclient.data.mapper
 
 import com.imnidasoftware.vknewsclient.data.model.CommentsResponseDto
 import com.imnidasoftware.vknewsclient.data.model.NewsFeedResponseDto
-import com.imnidasoftware.vknewsclient.domain.FeedPost
-import com.imnidasoftware.vknewsclient.domain.PostComment
-import com.imnidasoftware.vknewsclient.domain.StatisticItem
-import com.imnidasoftware.vknewsclient.domain.StatisticType
+import com.imnidasoftware.vknewsclient.domain.entity.FeedPost
+import com.imnidasoftware.vknewsclient.domain.entity.PostComment
+import com.imnidasoftware.vknewsclient.domain.entity.StatisticItem
+import com.imnidasoftware.vknewsclient.domain.entity.StatisticType
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.absoluteValue

@@ -1,4 +1,4 @@
-package com.imnidasoftware.vknewsclient.domain
+package com.imnidasoftware.vknewsclient.domain.entity
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

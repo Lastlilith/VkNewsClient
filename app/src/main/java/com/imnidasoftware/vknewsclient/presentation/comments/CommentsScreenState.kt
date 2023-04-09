@@ -1,7 +1,7 @@
 package com.imnidasoftware.vknewsclient.presentation.comments
 
-import com.imnidasoftware.vknewsclient.domain.FeedPost
-import com.imnidasoftware.vknewsclient.domain.PostComment
+import com.imnidasoftware.vknewsclient.domain.entity.FeedPost
+import com.imnidasoftware.vknewsclient.domain.entity.PostComment
 
 sealed class CommentsScreenState {
 

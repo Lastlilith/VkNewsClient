@@ -1,6 +1,6 @@
 package com.imnidasoftware.vknewsclient.presentation.news
 
-import com.imnidasoftware.vknewsclient.domain.FeedPost
+import com.imnidasoftware.vknewsclient.domain.entity.FeedPost
 
 sealed class NewsFeedScreenState {
 

@@ -19,9 +19,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.imnidasoftware.vknewsclient.R
-import com.imnidasoftware.vknewsclient.domain.FeedPost
-import com.imnidasoftware.vknewsclient.domain.StatisticItem
-import com.imnidasoftware.vknewsclient.domain.StatisticType
+import com.imnidasoftware.vknewsclient.domain.entity.FeedPost
+import com.imnidasoftware.vknewsclient.domain.entity.StatisticItem
+import com.imnidasoftware.vknewsclient.domain.entity.StatisticType
 import com.imnidasoftware.vknewsclient.ui.theme.DarkRed
 
 @Composable
