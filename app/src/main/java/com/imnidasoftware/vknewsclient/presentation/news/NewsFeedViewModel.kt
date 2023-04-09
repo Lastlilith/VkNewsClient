@@ -1,15 +1,21 @@
 package com.imnidasoftware.vknewsclient.presentation.news
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.imnidasoftware.vknewsclient.data.repository.NewsFeedRepository
 import com.imnidasoftware.vknewsclient.domain.FeedPost
 import com.imnidasoftware.vknewsclient.extensions.mergeWith
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class NewsFeedViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val exceptionHandler = CoroutineExceptionHandler { _, _->
+        Log.e("POPO", "Exception caught by exception handler" )
+    }
 
     private val repository = NewsFeedRepository(application)
 
@@ -38,14 +44,14 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun changeLikeStatus(feedPost: FeedPost) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.changeLikeStatus(feedPost)
         }
     }
 
 
     fun remove(feedPost: FeedPost) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.deletePost(feedPost)
         }
 
