@@ -7,26 +7,28 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.imnidasoftware.vknewsclient.domain.entity.AuthState
+import com.imnidasoftware.vknewsclient.presentation.NewsFeedApplication
+import com.imnidasoftware.vknewsclient.presentation.ViewModelFactory
 import com.imnidasoftware.vknewsclient.ui.theme.VkNewsClientTheme
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (application as NewsFeedApplication).component
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
-
-        try {
-            Class.forName("dalvik.system.CloseGuard")
-                .getMethod("setEnabled", Boolean::class.javaPrimitiveType)
-                .invoke(null, true)
-        } catch (e: ReflectiveOperationException) {
-            throw RuntimeException(e)
-        }
-
         setContent {
             VkNewsClientTheme {
-                val viewModel: MainViewModel = viewModel()
+                val viewModel: MainViewModel = viewModel(factory = viewModelFactory)
                 val authState = viewModel.authState.collectAsState(AuthState.Initial)
 
                 val launcher = rememberLauncherForActivityResult(
@@ -37,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
                 when (authState.value) {
                     is AuthState.Authorized -> {
-                        MainScreen()
+                        MainScreen(viewModelFactory)
                     }
                     is AuthState.NotAuthorized -> {
                         LoginScreen {

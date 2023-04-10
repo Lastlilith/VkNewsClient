@@ -1,32 +1,39 @@
 package com.imnidasoftware.vknewsclient.data.repository
 
-import android.app.Application
 import com.imnidasoftware.vknewsclient.data.mapper.NewsFeedMapper
-import com.imnidasoftware.vknewsclient.data.network.ApiFactory
-import com.imnidasoftware.vknewsclient.domain.entity.FeedPost
-import com.imnidasoftware.vknewsclient.domain.entity.PostComment
-import com.imnidasoftware.vknewsclient.domain.entity.StatisticItem
-import com.imnidasoftware.vknewsclient.domain.entity.StatisticType
-import com.imnidasoftware.vknewsclient.extensions.mergeWith
-import com.imnidasoftware.vknewsclient.domain.entity.AuthState
+import com.imnidasoftware.vknewsclient.data.network.ApiService
+import com.imnidasoftware.vknewsclient.domain.entity.*
 import com.imnidasoftware.vknewsclient.domain.repository.NewsFeedRepository
+import com.imnidasoftware.vknewsclient.extensions.mergeWith
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class NewsFeedRepositoryImpl(application: Application): NewsFeedRepository {
+class NewsFeedRepositoryImpl @Inject constructor(
+    private val storage: VKPreferencesKeyValueStorage,
+    private val apiService: ApiService,
+    private val mapper: NewsFeedMapper
+) : NewsFeedRepository {
 
-    private val storage = VKPreferencesKeyValueStorage(application)
     private val token
-        get() =  VKAccessToken.restore(storage)
+        get() = VKAccessToken.restore(storage)
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     private val nextDataNeededEvents = MutableSharedFlow<Unit>(replay = 1)
     private val refreshedListFlow = MutableSharedFlow<List<FeedPost>>()
+
+
+    private val _feedPosts = mutableListOf<FeedPost>()
+    private val feedPosts: List<FeedPost> = _feedPosts.toList()
+
+    private var nextFrom: String? = null
+
+    private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
 
     private val loadedListFlow = flow {
         nextDataNeededEvents.emit(Unit)
@@ -54,15 +61,6 @@ class NewsFeedRepositoryImpl(application: Application): NewsFeedRepository {
         true
     }
 
-    private val apiService = ApiFactory.apiService
-    private val mapper = NewsFeedMapper()
-
-    private val _feedPosts = mutableListOf<FeedPost>()
-    private val feedPosts: List<FeedPost> = _feedPosts.toList()
-
-    private var nextFrom: String? = null
-
-    private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
 
     private val authStateFlow = flow {
         checkAuthStateEvents.emit(Unit)
