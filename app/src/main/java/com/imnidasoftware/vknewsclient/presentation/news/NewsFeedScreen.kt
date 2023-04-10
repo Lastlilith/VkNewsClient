@@ -51,8 +51,8 @@ private fun NewsFeedScreenContent(
                 nextDataIsLoading = currentState.nextDataIsLoading
             )
         }
-        NewsFeedScreenState.Initial -> {}
-        NewsFeedScreenState.Loading -> {
+        is NewsFeedScreenState.Initial -> {}
+        is NewsFeedScreenState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
             ) {

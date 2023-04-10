@@ -18,28 +18,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class NewsFeedViewModel @Inject constructor(
-    private val getRecommendationsUseCase : GetRecommendationsUseCase,
-    private val loadNextDataUseCase : LoadNextDataUseCase,
-    private val changeLikeStatusUseCase : ChangeLikeStatusUseCase,
-    private val deletePostUseCase : DeletePostUseCase
+    private val getRecommendationsUseCase: GetRecommendationsUseCase,
+    private val loadNextDataUseCase: LoadNextDataUseCase,
+    private val changeLikeStatusUseCase: ChangeLikeStatusUseCase,
+    private val deletePostUseCase: DeletePostUseCase,
 ) : ViewModel() {
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, _->
-        Log.e("POPO", "Exception caught by exception handler" )
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
+        Log.d("NewsFeedViewModel", "Exception caught by exception handler")
     }
-
 
     private val recommendationsFlow = getRecommendationsUseCase()
 
     private val loadNextDataFlow = MutableSharedFlow<NewsFeedScreenState>()
-
 
     val screenState = recommendationsFlow
         .filter { it.isNotEmpty() }
         .map { NewsFeedScreenState.Posts(posts = it) as NewsFeedScreenState }
         .onStart { emit(NewsFeedScreenState.Loading) }
         .mergeWith(loadNextDataFlow)
-
 
     fun loadNextRecommendations() {
         viewModelScope.launch {
@@ -59,11 +56,9 @@ class NewsFeedViewModel @Inject constructor(
         }
     }
 
-
     fun remove(feedPost: FeedPost) {
         viewModelScope.launch(exceptionHandler) {
             deletePostUseCase(feedPost)
         }
-
     }
 }
